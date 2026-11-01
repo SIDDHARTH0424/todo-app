@@ -5,7 +5,21 @@ const emptyMsg = document.getElementById("emptyMsg");
 const counter = document.getElementById("counter");
 const filterButtons = document.querySelectorAll(".filter");
 
-let todos = [];
+const STORAGE_KEY = "todos";
+
+function loadTodos() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
+function saveTodos() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+}
+
+let todos = loadTodos();
 let currentFilter = "all";
 
 function addTodo(text) {
@@ -32,6 +46,7 @@ function getVisibleTodos() {
 }
 
 function render() {
+    saveTodos();
   list.innerHTML = "";
   const visible = getVisibleTodos();
 
